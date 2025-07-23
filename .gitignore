@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+# JiraReportAutomationPython specific
+*.csv
+*.xlsm
+*.bat
+*.vbs
+run_command.txt
+assets/
