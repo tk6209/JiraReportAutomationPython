@@ -1,0 +1,31 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [1.0.0] – 2025-07-23
+
+### ✨ Added
+- `setup.ps1` script to automatically organize the project structure
+- Project folders:
+  - `macros/` for Excel files containing macros
+  - `assets/` for static resources like icons
+  - `archive/` for legacy or backup files
+
+### 🔧 Changed
+- `README.md` fully rewritten in English, with clear documentation of:
+  - Requirements
+  - Setup instructions
+  - Execution flow
+  - Architecture diagram
+- `.gitignore` optimized to ignore temporary, legacy, and build files
+- Moved `Dashboard of Operations.xlsm` to `macros/`
+- Moved `OnePage.py.bak` and older `.xlsx` to `archive/`
+
+### 🧹 Removed
+- Redundant or unstructured files from the root directory
+
+---
+
+## [Unreleased]
+
+- TBD
