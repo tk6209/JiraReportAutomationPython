@@ -1,4 +1,4 @@
-# Download the dailyDashboard info
+# Download the dailyDashboard info Python (OnePage.py) → .bat → VBScript (script.vbs) → Excel (.xlsm)
 
 import os
 import glob
