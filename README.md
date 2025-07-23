@@ -1,5 +1,7 @@
 # Jira Report Automation in Python
 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/tk6209/JiraReportAutomationPython)
+
 This project automates the download of a CSV report from JIRA and the execution of an Excel macro to process and update a daily dashboard.
 
 ## 🔧 Requirements
