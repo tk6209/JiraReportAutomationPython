@@ -2,60 +2,59 @@
 
 import os
 import glob
+import time
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 
+# Usuário ativo do sistema
 activeUser = os.getlogin()
 
-#Files handling paths
-finalPath = ("C:\\Users\\vteixeira\\Downloads\\")
-initPath = glob.glob("C:/Users/vteixeira/Downloads/*.csv")
+# Caminhos de arquivos
+download_dir = os.path.join("C:\\Users", activeUser, "Downloads")
+temp_dir = os.path.join("C:\\Users", activeUser, "tempAutomation")
 
-#Remove Old files
-for f in initPath:
+# Remove arquivos .csv antigos da pasta de downloads
+for f in glob.glob(os.path.join(download_dir, "*.csv")):
     os.remove(f)
 
+# Configurações do perfil do Firefox
+profile = webdriver.FirefoxProfile()
+profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/csv,text/csv")
+profile.set_preference("browser.download.manager.showWhenStarting", False)
+profile.set_preference("browser.download.dir", temp_dir)
+profile.set_preference("browser.download.folderList", 2)
 
-#Creates FireFox Profile
-pref = webdriver.FirefoxProfile()
-pref.set_preference("browser.helperApps.neverAsk.saveToDisk","application/csv,text/csv")
-pref.set_preference("browser.download.manager.showWenStarting", False)
-pref.set_preference("browser.download.dir", '"C:/Users/" , activeUser , "/tempAutomation/"')
-pref.set_preference("browser.download.folderList", 2)
+# Inicia o Firefox com o perfil configurado
+driver = webdriver.Firefox(firefox_profile=profile)
 
-#Invoke WebDriver
-ie = webdriver.Firefox(firefox_profile=pref)
-
-#Login Credentials activeUser + password
+# Captura senha da variável de ambiente
 password = os.environ.get('cred_anyconn')
+if not password:
+    raise ValueError("A variável de ambiente 'cred_anyconn' não está definida.")
 
-#Download routine
-ie.set_page_load_timeout(20)
-ie.get('https://clientsupport.worldlinesweden.com/sr/jira.issueviews:searchrequest-csv-current-fields/11177/SearchRequest-11177.csv')
-username_button = ie.find_element_by_id("login-form-username")
-username_button.send_keys(activeUser)
-password_button = ie.find_element_by_id("login-form-password")
-password_button.send_keys(password)
-login_button = ie.find_element_by_id("login-form-submit")
-login_button.click()
-ie.quit()
+# Baixa o relatório do JIRA
+try:
+    driver.set_page_load_timeout(20)
+    driver.get("https://clientsupport.worldlinesweden.com/sr/jira.issueviews:searchrequest-csv-current-fields/11177/SearchRequest-11177.csv")
 
+    driver.find_element(By.ID, "login-form-username").send_keys(activeUser)
+    driver.find_element(By.ID, "login-form-password").send_keys(password)
+    driver.find_element(By.ID, "login-form-submit").click()
 
-#File Rename | r=root, d=directories, f = files
-files = []
-for r, d, f in os.walk(finalPath):
-    for file in f:
-        if '.csv' in file:
-            files.append(os.path.join(r,file))
+    # Aguarda download (ajuste conforme necessário)
+    time.sleep(5)
 
-for f in files:
-    os.rename(f,"C:\\Users\\vteixeira\\Downloads\\raw.csv")
+finally:
+    driver.quit()
 
-#Call VBA script
+# Renomeia o novo arquivo CSV
+csv_files = glob.glob(os.path.join(download_dir, "*.csv"))
+if csv_files:
+    os.rename(csv_files[0], os.path.join(download_dir, "raw.csv"))
+else:
+    raise FileNotFoundError("Nenhum arquivo CSV foi encontrado para renomear.")
+
+# Executa macro do Excel via .bat
 os.system("C:/scripts/OnePage/run.bat")
 
-#print ("Congratulations today's report has been successfully sent")
 exit()
-
-
-#Other donwload features
-#"text/plain,application/pdf,application/msword,application/csv,text/csv,application/rtf,application/xml,text/xml,application/octet-stream,application/vnd.ms-excel,application/zip,text/txt,text/plain,application/pdf,application/x-pdf")
