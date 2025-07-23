@@ -1,4 +1,6 @@
 # setup.ps1 - Organizes project structure for JiraReportAutomationPython
+# to execute powershell -ExecutionPolicy Bypass -File .\setup.ps1
+
 
 Write-Host "`n🔧 Setting up JiraReportAutomationPython project structure..." -ForegroundColor Cyan
 
