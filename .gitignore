@@ -134,3 +134,7 @@ dmypy.json
 *.vbs
 run_command.txt
 assets/
+# Ignore backup and temporary files
+OnePage.py.bak
+*.xlsx
+archive/
