@@ -1,10 +1,27 @@
-Dim args, objExcel
+' script.vbs - Launches Excel, opens a workbook, and runs the "refresh" macro
 
-set args = wscript.arguments
-set objExcel = CreateObject("Excel.Application")
+Dim args, objExcel, workbookPath
 
-objExcel.Workbooks.Open args(0)
-ObjExcel.Visible = True
-ObjExcel.Run "refresh"
-ObjExcel.Quit
+Set args = WScript.Arguments
 
+If args.Count = 0 Then
+    WScript.Echo "❌ Error: No Excel file path provided."
+    WScript.Quit 1
+End If
+
+workbookPath = args(0)
+
+Set objExcel = CreateObject("Excel.Application")
+objExcel.Visible = True
+
+On Error Resume Next
+objExcel.Workbooks.Open workbookPath
+
+If Err.Number <> 0 Then
+    WScript.Echo "❌ Failed to open workbook: " & workbookPath
+    objExcel.Quit
+    WScript.Quit 2
+End If
+
+objExcel.Run "refresh"
+objExcel.Quit
