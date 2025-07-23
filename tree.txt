@@ -1,0 +1,21 @@
+JiraReportAutomationPython
+│
+├── .gitignore
+├── LICENSE
+├── OnePage.py
+├── OnePage.spec
+├── README.md
+├── requirements.txt
+├── run.bat
+├── run_command.txt
+├── script.vbs
+│
+├── assets
+│   └── python.ico
+│
+├── macros
+│   └── Dashboard of Operations.xlsm
+│
+└── archive
+    ├── Dashboard of Operations 2019-12-19.xlsx
+    └── OnePage.py.bak
