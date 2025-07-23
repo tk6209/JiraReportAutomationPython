@@ -1,1 +1,2 @@
-C:\Windows\System32\cmd.exe /K "cd /d C:\scripts\OnePage\"
+:: Opens Command Prompt in the project folder
+C:\Windows\System32\cmd.exe /K "cd /d %USERPROFILE%\scripts\OnePage"
