@@ -1,8 +1,6 @@
 # setup.ps1 - Organizes project structure for JiraReportAutomationPython
-# to execute powershell -ExecutionPolicy Bypass -File .\setup.ps1
 
-
-Write-Host "`n🔧 Setting up JiraReportAutomationPython project structure..." -ForegroundColor Cyan
+Write-Host "`n[INFO] Setting up JiraReportAutomationPython project structure..."
 
 # Define base paths
 $root     = Split-Path -Parent $MyInvocation.MyCommand.Definition
@@ -10,14 +8,15 @@ $assets   = Join-Path $root "assets"
 $macros   = Join-Path $root "macros"
 $archive  = Join-Path $root "archive"
 
-# Create directories if not exist
+# Create directories if they don't exist
 $folders = @($assets, $macros, $archive)
 foreach ($folder in $folders) {
     if (-Not (Test-Path $folder)) {
         New-Item -Path $folder -ItemType Directory | Out-Null
-        Write-Host "📁 Created: $folder" -ForegroundColor Green
-    } else {
-        Write-Host "📁 Exists:  $folder" -ForegroundColor DarkGray
+        Write-Host "[CREATED] $folder"
+    }
+    else {
+        Write-Host "[EXISTS ] $folder"
     }
 }
 
@@ -34,4 +33,12 @@ foreach ($item in $filesToMove) {
     $targetPath = Join-Path $item.Target $item.Source
 
     if (Test-Path $sourcePath) {
-        Move-Item -Path $sourcePath -Destination $targe
+        Move-Item -Path $sourcePath -Destination $targetPath -Force
+        Write-Host "[MOVED  ] $($item.Source) to $($item.Target)"
+    }
+    else {
+        Write-Host "[SKIPPED] $($item.Source) not found"
+    }
+}
+
+Write-Host "`n[DONE] Project setup complete."
